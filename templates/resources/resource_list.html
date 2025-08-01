@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Resources</h2>
+    <a href="{% url 'resource_create' %}" class="btn btn-success mb-3">Add Resource</a>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {% if resources %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Working Days</th>
+                <th>Days Present</th>
+                <th>Hours Present</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resource in resources %}
+            <tr>
+                <td>{{ resource.resource_name }}</td>
+                <td>{{ resource.working_days }}</td>
+                <td>{{ resource.present_day }}</td>
+                <td>{{ resource.present_hours }}</td>
+                <td>
+                    <a href="{% url 'resource_update' resource.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'resource_delete' resource.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No resources found.</p>
+    {% endif %}
+</div>
+{% endblock %}

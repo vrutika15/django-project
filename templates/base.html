@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Team Production Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            color: white;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+        }
+
+        .tab-content-area {
+            padding: 20px;
+            background-color: white;
+            min-height: 80vh;
+            border-radius: 8px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Team Dashboard</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="#" data-tab="attendance">Attendance</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-tab="projects">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-tab="resources">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar p-3">
+                <h5>Select Year</h5>
+                <select class="form-select mb-3" id="yearSelect">
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %} 
+                </select>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-10">
+                <div class="tab-content-area mt-3" id="mainContent">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll('.nav-link[data-tab]');
+            const yearSelect = document.getElementById('yearSelect');
+            const monthButtons = document.querySelectorAll('.month-btn');
+            const mainContent = document.getElementById('mainContent');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const tab = this.getAttribute('data-tab');
+
+                    fetch(`/${tab}/`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                        .then(response => response.text())
+                        .then(html => {
+                            mainContent.innerHTML = html;
+
+                            if (tab === 'resources') {
+                                initResourceForm();
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error loading tab:", err);
+                        });
+                });
+            });
+
+            // (optional) Month button logic
+            // monthButtons.forEach(btn => {
+                // btn.addEventListener('click', function () {
+                    // monthButtons.forEach(b => b.classList.remove('active'));
+                    // this.classList.add('active');
+                    // const selectedMonth = this.getAttribute('data-month');
+                    // const selectedYear = yearSelect.value;
+                    // mainContent.innerHTML = `<h4>${selectedMonth} ${selectedYear} Report</h4><p>Dynamic report content will be loaded here...</p>`;
+                // });
+            // });
+        });
+
+        // yearSelect.addEventListener('change', function () {
+            // localStorage.setItem('selectedYear', this.value);
+        // });
+
+        // monthButtons.forEach(btn => {
+            // btn.addEventListener('click', function () {
+                // const selectedMonth = this.getAttribute('data-month');
+                // const selectedYear = yearSelect.value;
+
+                // localStorage.setItem('selectedMonth', selectedMonth);
+                // localStorage.setItem('selectedYear', selectedYear);
+
+                // fetch(`/resources/?year=${selectedYear}&month=${selectedMonth}`, {
+                    // headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                // })
+                    // .then(response => response.text())
+                    // .then(html => {
+                        // mainContent.innerHTML = html;
+                    // });
+            // });
+        // });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthTabs = document.querySelectorAll('.month-tab');
+
+    // Store selected year
+    yearSelect.addEventListener('change', function () {
+        localStorage.setItem('selectedYear', this.value);
+    });
+
+    // Store selected month
+    monthTabs.forEach(tab => {
+        tab.addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedMonth = this.getAttribute('data-month');
+            localStorage.setItem('selectedMonth', selectedMonth);
+
+            // Optional: Highlight the selected tab
+            monthTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const year = localStorage.getItem('selectedYear');
+            const month = localStorage.getItem('selectedMonth');
+            if (year && month) {
+                document.querySelector('[name="year"]').value = year;
+                document.querySelector('[name="month"]').value = month;
+            }
+        });
+
+
+        // function initResourceForm() {
+        // const resourceCountSelect = document.getElementById("resource_count");
+        // const resourceFieldsDiv = document.getElementById("resourceFields");
+
+        // if (!resourceCountSelect || !resourceFieldsDiv) return;
+
+        // function generateFields(count) {
+        // resourceFieldsDiv.innerHTML = "";
+
+        // for (let i = 0; i < count; i++) {
+        // const group = document.createElement("div");
+        // group.classList.add("mb-3", "p-3", "border", "rounded");
+
+        // group.innerHTML = `
+        // <div class="mb-2">
+        // <label class="form-label">Resource Name ${i + 1}</label>
+        // <input type="text" name="resource_name_${i}" class="form-control" required>
+        // </div>
+
+        // <div class="mb-2">
+        // <label class="form-label">Working Days</label>
+        // <input type="number" name="working_days_${i}" class="form-control" required>
+        // </div>
+
+        // <div class="mb-2">
+        // <label class="form-label">Present Days</label>
+        // <input type="number" name="present_day_${i}" class="form-control present-day" data-index="${i}" required>
+        // </div>
+
+        // <div class="mb-2">
+        // <label class="form-label">Present Hours (auto-calculated)</label>
+        // <input type="text" name="present_hours_${i}" class="form-control present-hours" readonly>
+        // </div>
+        // `;
+
+        // resourceFieldsDiv.appendChild(group);
+        // }
+
+        // After generating the fields, attach input listeners
+        // const presentDayInputs = resourceFieldsDiv.querySelectorAll('.present-day');
+        // presentDayInputs.forEach(input => {
+        // input.addEventListener('input', function () {
+        // const index = this.getAttribute('data-index');
+        // const value = parseFloat(this.value);
+        // const hoursInput = resourceFieldsDiv.querySelector(`input[name="present_hours_${index}"]`);
+
+        // if (!isNaN(value)) {
+        // hoursInput.value = (value * 8).toFixed(2); // 2 decimal places
+        // } else {
+        // hoursInput.value = '';
+        // }
+        // });
+        // });
+        // }
+
+        // resourceCountSelect.addEventListener("change", function () {
+        // const count = parseInt(this.value);
+        // generateFields(count);
+        // });
+
+        // Generate default number of fields on load
+        // generateFields(parseInt(resourceCountSelect.value));
+        // }
+
+    </script>
+
+
+</body>
+
+</html>

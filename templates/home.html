@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- <div class="container mt-4"> -->
+    <h3 class="mb-3 text-secondary">Welcome to the Team Production Dashboard</h3>
+    <p class="text-muted">Select a year and month to view reports. Use the tabs above to switch between Attendance,
+        Projects, and Resources.</p>
+
+
+    <ul class="nav nav-tabs mt-4">
+        {% for month in months %}
+        <li class="nav-item">
+            <a class="nav-link month-tab {% if forloop.first %}active{% endif %}" href="#"
+                data-month="{{ forloop.counter }}">
+                {{ month }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% endblock %}
+
+<!-- </div> -->
+{% block Script %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const yearSelect = document.getElementById('yearSelect');
+    const monthTabs = document.querySelectorAll('.month-tab');
+
+    // Store selected year
+    yearSelect.addEventListener('change', function () {
+        localStorage.setItem('selectedYear', this.value);
+    });
+
+    // Store selected month
+    monthTabs.forEach(tab => {
+        tab.addEventListener('click', function (e) {
+            e.preventDefault();
+            const selectedMonth = this.getAttribute('data-month');
+            localStorage.setItem('selectedMonth', selectedMonth);
+
+            // Optional: Highlight the selected tab
+            monthTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
+</script>
+
+{% endblock %}

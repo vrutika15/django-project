@@ -1,0 +1,43 @@
+<div class="container mt-4">
+    <h2>{{ title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {{ form.year }}
+        {{ form.month }}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'resource_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const yearInput = document.querySelector('input[name="year"]');
+    const monthInput = document.querySelector('input[name="month"]');
+
+    const storedYear = localStorage.getItem('selectedYear');
+    const storedMonth = localStorage.getItem('selectedMonth');
+
+    if (storedYear && storedMonth) {
+        yearInput.value = storedYear;
+        monthInput.value = storedMonth;
+    }
+
+    form.addEventListener('submit', function () {
+        yearInput.value = localStorage.getItem('selectedYear') || new Date().getFullYear();
+        monthInput.value = localStorage.getItem('selectedMonth') || (new Date().getMonth() + 1);
+    });
+});
+</script>

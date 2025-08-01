@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- <div class="container mt-4">
+    <h4>Add Resources</h4>
+
+    <form method="post" id="resourceForm">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="resource_count" class="form-label">How many resources?</label>
+            <select class="form-select" id="resource_count" name="resource_count">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+    
+        <div id="resourceFields"></div>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+
+<script>
+function initResourceForm() {
+    const resourceCountSelect = document.getElementById("resource_count");
+    const resourceFieldsDiv = document.getElementById("resourceFields");
+
+    if (!resourceCountSelect || !resourceFieldsDiv) return;
+
+    function generateFields(count) {
+        resourceFieldsDiv.innerHTML = "";
+
+        for (let i = 0; i < count; i++) {
+            const group = document.createElement("div");
+            group.classList.add("mb-3", "p-3", "border", "rounded");
+
+            group.innerHTML = `
+                <div class="mb-2">
+                    <label class="form-label">Resource Name ${i + 1}</label>
+                    <input type="text" name="resource_name_${i}" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Working Days</label>
+                    <input type="number" name="working_days_${i}" class="form-control" required>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Present Days</label>
+                    <input type="number" name="present_day_${i}" class="form-control" required>
+                </div>
+            `;
+
+            resourceFieldsDiv.appendChild(group);
+        }
+    }
+
+    resourceCountSelect.addEventListener("change", function () {
+        const count = parseInt(this.value);
+        generateFields(count);
+    });
+
+    // Trigger default generation on load
+    generateFields(parseInt(resourceCountSelect.value));
+}
+
+document.addEventListener("DOMContentLoaded", initResourceForm);
+</script> -->
+
+    {% include 'resource_form_partial.html' %}
+{% endblock %}

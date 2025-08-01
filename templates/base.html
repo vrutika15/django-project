@@ -45,10 +45,14 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Team Dashboard</a>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="#" data-tab="attendance">Attendance</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" data-tab="projects">Projects</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" data-tab="resources">Resources</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                        href="{% url 'dashboard_home' %}">Attendance</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path.startswith '/projects' %}active{% endif %}"
+                        href="{% url 'projects:project_list' %}">Projects</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path.startswith '/resources' %}active{% endif %}"
+                        href="/resources/">Resources</a></li>
             </ul>
+
         </div>
     </nav>
 
@@ -59,8 +63,8 @@
                 <h5>Select Year</h5>
                 <select class="form-select mb-3" id="yearSelect">
                     {% for year in years %}
-                    <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}</option>
-                    {% endfor %} 
+                    <option value="{{ year }}" {% if year==current_year %}selected{% endif %}>{{ year }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -106,61 +110,61 @@
 
             // (optional) Month button logic
             // monthButtons.forEach(btn => {
-                // btn.addEventListener('click', function () {
-                    // monthButtons.forEach(b => b.classList.remove('active'));
-                    // this.classList.add('active');
-                    // const selectedMonth = this.getAttribute('data-month');
-                    // const selectedYear = yearSelect.value;
-                    // mainContent.innerHTML = `<h4>${selectedMonth} ${selectedYear} Report</h4><p>Dynamic report content will be loaded here...</p>`;
-                // });
+            // btn.addEventListener('click', function () {
+            // monthButtons.forEach(b => b.classList.remove('active'));
+            // this.classList.add('active');
+            // const selectedMonth = this.getAttribute('data-month');
+            // const selectedYear = yearSelect.value;
+            // mainContent.innerHTML = `<h4>${selectedMonth} ${selectedYear} Report</h4><p>Dynamic report content will be loaded here...</p>`;
+            // });
             // });
         });
 
         // yearSelect.addEventListener('change', function () {
-            // localStorage.setItem('selectedYear', this.value);
+        // localStorage.setItem('selectedYear', this.value);
         // });
 
         // monthButtons.forEach(btn => {
-            // btn.addEventListener('click', function () {
-                // const selectedMonth = this.getAttribute('data-month');
-                // const selectedYear = yearSelect.value;
+        // btn.addEventListener('click', function () {
+        // const selectedMonth = this.getAttribute('data-month');
+        // const selectedYear = yearSelect.value;
 
-                // localStorage.setItem('selectedMonth', selectedMonth);
-                // localStorage.setItem('selectedYear', selectedYear);
+        // localStorage.setItem('selectedMonth', selectedMonth);
+        // localStorage.setItem('selectedYear', selectedYear);
 
-                // fetch(`/resources/?year=${selectedYear}&month=${selectedMonth}`, {
-                    // headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                // })
-                    // .then(response => response.text())
-                    // .then(html => {
-                        // mainContent.innerHTML = html;
-                    // });
-            // });
+        // fetch(`/resources/?year=${selectedYear}&month=${selectedMonth}`, {
+        // headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        // })
+        // .then(response => response.text())
+        // .then(html => {
+        // mainContent.innerHTML = html;
+        // });
+        // });
         // });
 
 
         document.addEventListener("DOMContentLoaded", function () {
-    const yearSelect = document.getElementById('yearSelect');
-    const monthTabs = document.querySelectorAll('.month-tab');
+            const yearSelect = document.getElementById('yearSelect');
+            const monthTabs = document.querySelectorAll('.month-tab');
 
-    // Store selected year
-    yearSelect.addEventListener('change', function () {
-        localStorage.setItem('selectedYear', this.value);
-    });
+            // Store selected year
+            yearSelect.addEventListener('change', function () {
+                localStorage.setItem('selectedYear', this.value);
+            });
 
-    // Store selected month
-    monthTabs.forEach(tab => {
-        tab.addEventListener('click', function (e) {
-            e.preventDefault();
-            const selectedMonth = this.getAttribute('data-month');
-            localStorage.setItem('selectedMonth', selectedMonth);
+            // Store selected month
+            monthTabs.forEach(tab => {
+                tab.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const selectedMonth = this.getAttribute('data-month');
+                    localStorage.setItem('selectedMonth', selectedMonth);
 
-            // Optional: Highlight the selected tab
-            monthTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
+                    // Optional: Highlight the selected tab
+                    monthTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         });
-    });
-});
 
         document.addEventListener('DOMContentLoaded', function () {
             const year = localStorage.getItem('selectedYear');

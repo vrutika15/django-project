@@ -1,7 +1,5 @@
-{% extends "base.html" %}
 {% load static %}
 
-{% block content %}
 <div class="container mt-4">
     <h2 class="mb-4">Resources</h2>
     
@@ -39,11 +37,11 @@
                 <td>{{ resource.present_day }}</td>
                 <td>{{ resource.present_hours }}</td>
                 <td>
-                    <a href="{% url 'resource_update' resource.pk %}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-edit"></i> Edit
+                    <a href="{% url 'resource_update' resource.pk %}" class="btn btn-sm btn-primary me-2">
+                        <i class="fas fa-edit"></i>
                     </a>
                     <a href="{% url 'resource_delete' resource.pk %}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash"></i> Delete
+                        <i class="fas fa-trash"></i>
                     </a>
                 </td>
             </tr>
@@ -54,4 +52,3 @@
         <p>No resources found.</p>
     {% endif %}
 </div>
-{% endblock %}

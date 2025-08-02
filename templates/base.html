@@ -46,7 +46,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Team Dashboard</a>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}"
+               <!-- <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}"
                         href="{% url 'projects:dashboard_home' %}">Attendance</a></li>
                 <li class="nav-item">
                     <a class="nav-link {% if '/projects' in request.path %}active{% endif %}"
@@ -58,7 +58,11 @@
                     <a class="nav-link {% if '/resources' in request.path %}active{% endif %}" href="/resources/">
                         Resources
                     </a>
-                </li>
+                </li>-->
+
+                 <li class="nav-item"><a class="nav-link active" href="#" data-tab="attendance">Attendance</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-tab="projects">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" data-tab="resources">Resources</a></li>
 
             </ul>
 

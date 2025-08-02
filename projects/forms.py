@@ -69,10 +69,12 @@ class ProjectForm(forms.ModelForm):
         non_billable = cleaned_data.get('non_billable_days') or 0
         present = cleaned_data.get('present_day') or 0
 
+        #ensure no negative values for days
         if billable < 0 or non_billable < 0 or present < 0:
             raise forms.ValidationError("Days cannot be negative.")
 
-        if billable + non_billable > present:
-            raise forms.ValidationError("Total billable + non-billable days cannot exceed present days.")
+        #sum of billable + non-billable days does not exceed present days
+        if billable > present:
+            raise forms.ValidationError("Billable days cannot be more than present days.")
 
         return cleaned_data
